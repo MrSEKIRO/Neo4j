@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  webapi:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - NEO4J_URI=bolt://localhost:7687
+      - NEO4J_USERNAME=sa
+      - NEO4J_PASSWORD=123456789
+    depends_on:
+      - neo4j
+
+  neo4j:
+    image: neo4j:4.4
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=sa/123456789
